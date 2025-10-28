@@ -43,7 +43,15 @@ def serialize_animal(animal_obj):
 
 def main():
     """Generates an HTML file with animal information from a JSON data source."""
-    animals_data = fetch_animals("Zebra")
+    name = input("Enter a name of an animal: ").strip()
+    if not name:
+        print("No animal provided. Abort.")
+        return
+
+    animals_data = fetch_animals(name)
+    if not animals_data:
+        print(f"No results for '{name}'.")
+        return
 
     output = ''
     for animal in animals_data:
@@ -51,6 +59,8 @@ def main():
 
     with open('animals_template.html', 'r', encoding='utf-8') as f:
         animals_html_text = f.read()
+
+    print("Website was successfully generated to the file animals.html.")
 
     updated_html = animals_html_text.replace('__REPLACE_ANIMALS_INFO__', output)
 
