@@ -1,18 +1,4 @@
-import os
-from dotenv import load_dotenv
-import requests
-
-load_dotenv()
-
-API_URL = "https://api.api-ninjas.com/v1/animals"
-API_KEY = os.getenv("API_NINJAS_KEY")
-
-
-def fetch_animals(name):
-    headers = {"X-Api-Key": API_KEY}
-    response = requests.get(API_URL, headers=headers, params={"name": name})
-    response.raise_for_status()
-    return response.json()
+import data_fetcher
 
 
 def serialize_animal(animal_obj):
@@ -48,7 +34,7 @@ def main():
         print("No animal provided. Abort.")
         return
 
-    animals_data = fetch_animals(name)
+    animals_data = data_fetcher.fetch_animals(name)
     if not animals_data:
         message = f'<h2>The animal "{name}" doesn\'t exist.</h2>'
 
