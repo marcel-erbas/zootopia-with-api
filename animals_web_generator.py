@@ -50,7 +50,18 @@ def main():
 
     animals_data = fetch_animals(name)
     if not animals_data:
-        print(f"No results for '{name}'.")
+        message = f'<h2>The animal "{name}" doesn\'t exist.</h2>'
+
+        with open('animals_template.html', 'r', encoding='utf-8') as f:
+            template = f.read()
+
+        updated_html = template.replace('__REPLACE_ANIMALS_INFO__', message)
+        updated_html = updated_html.replace('<head>', '<head>\n        <meta charset="UTF-8">')
+
+        with open('animals.html', 'w', encoding='utf-8') as f:
+            f.write(updated_html)
+
+        print(f'No results found for "{name}". Message written to animals.html.')
         return
 
     output = ''
