@@ -1,10 +1,18 @@
-import json
+import os
+from dotenv import load_dotenv
+import requests
+
+load_dotenv()
+
+API_URL = "https://api.api-ninjas.com/v1/animals"
+API_KEY = os.getenv("API_NINJAS_KEY")
 
 
-def load_data(file_path):
-    """ Loads a JSON file """
-    with open(file_path, 'r', encoding='utf-8') as handle:
-        return json.load(handle)
+def fetch_animals(name):
+    headers = {"X-Api-Key": API_KEY}
+    response = requests.get(API_URL, headers=headers, params={"name": name})
+    response.raise_for_status()
+    return response.json()
 
 
 def serialize_animal(animal_obj):
@@ -35,7 +43,7 @@ def serialize_animal(animal_obj):
 
 def main():
     """Generates an HTML file with animal information from a JSON data source."""
-    animals_data = load_data('animals_data.json')
+    animals_data = fetch_animals("Zebra")
 
     output = ''
     for animal in animals_data:
